@@ -1,0 +1,608 @@
+/* ---------- Layout ---------- */
+
+.page {
+  position: relative;
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 10% -10%, var(--bg-glow-1), transparent 60%),
+    radial-gradient(50rem 36rem at 100% 0%, var(--bg-glow-2), transparent 60%);
+}
+
+/* A scatter of stars built from tiny gradients — no images needed. */
+.sky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, var(--star), transparent),
+    radial-gradient(1px 1px at 28% 72%, var(--star), transparent),
+    radial-gradient(1.5px 1.5px at 46% 34%, var(--star), transparent),
+    radial-gradient(1px 1px at 63% 12%, var(--star), transparent),
+    radial-gradient(1.5px 1.5px at 78% 58%, var(--star), transparent),
+    radial-gradient(1px 1px at 88% 26%, var(--star), transparent),
+    radial-gradient(1px 1px at 8% 88%, var(--star), transparent),
+    radial-gradient(1.5px 1.5px at 92% 84%, var(--star), transparent);
+  animation: twinkle 6s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+  from { opacity: 0.45; }
+  to { opacity: 1; }
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: clamp(32px, 7vw, 72px) 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.eyebrow {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 8vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-top: 6px;
+}
+
+.hero__dot {
+  color: var(--gold);
+}
+
+.hero__tagline {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* ---------- Progress ring ---------- */
+
+.progress {
+  position: relative;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+
+.progress svg {
+  transform: rotate(-90deg);
+}
+
+.progress__track {
+  fill: none;
+  stroke: var(--accent-soft);
+}
+
+.progress__bar {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.progress__label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+
+.progress__label strong {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.progress__label span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 520px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.button--primary {
+  color: var(--accent-contrast);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--gold)));
+  box-shadow: 0 6px 20px -8px var(--accent);
+}
+
+.button--primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -8px var(--accent);
+}
+
+.button--primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.icon-button:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.icon-button--danger:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ---------- Form ---------- */
+
+.dream-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px 8px 20px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dream-form:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: var(--shadow), 0 0 0 4px var(--accent-soft);
+}
+
+.dream-form input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1.05rem;
+}
+
+.dream-form input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.dream-form__count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.dream-form__count.is-low {
+  color: var(--danger);
+}
+
+.dream-form__hint {
+  color: var(--text-muted);
+}
+
+.dream-form:focus-within .dream-form__hint {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .dream-form__hint {
+    display: none;
+  }
+}
+
+/* ---------- Panel + tabs ---------- */
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel__head h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+
+.tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.tabs__tab:hover {
+  color: var(--text);
+}
+
+.tabs__tab.is-active {
+  background: var(--surface-solid);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.tabs__count {
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* ---------- Dream list ---------- */
+
+.dreams {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+}
+
+.dream {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 10px 12px 14px;
+  border-radius: var(--radius);
+  animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background 0.15s;
+}
+
+.dream:hover {
+  background: var(--surface-hover);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.dream__check {
+  position: relative;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid color-mix(in srgb, var(--text-muted) 55%, transparent);
+  border-radius: 50%;
+  background: transparent;
+  color: transparent;
+  transition: border-color 0.2s, background 0.25s, color 0.2s, transform 0.2s;
+}
+
+.dream__check:hover {
+  border-color: var(--gold);
+  color: color-mix(in srgb, var(--gold) 60%, transparent);
+}
+
+.dream.is-done .dream__check {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: var(--surface-solid);
+}
+
+.dream.is-celebrating .dream__check {
+  animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pop {
+  40% { transform: scale(1.3); }
+}
+
+.sparks {
+  position: absolute;
+  inset: 50%;
+}
+
+.sparks i {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px;
+  border-radius: 50%;
+  background: var(--gold);
+  transform: rotate(var(--angle)) translateY(0);
+  animation: spark 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.sparks i:nth-child(odd) {
+  background: var(--accent);
+}
+
+@keyframes spark {
+  to {
+    transform: rotate(var(--angle)) translateY(-26px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+.dream__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.dream__text {
+  font-size: 1.02rem;
+  overflow-wrap: anywhere;
+  cursor: text;
+  transition: color 0.3s;
+}
+
+.dream.is-done .dream__text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--gold) 70%, transparent);
+  text-decoration-thickness: 2px;
+}
+
+.dream__edit {
+  width: 100%;
+  padding: 4px 8px;
+  margin: -5px -9px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  outline: none;
+  background: var(--surface-solid);
+  font-size: 1.02rem;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.dream__meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.dream__actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.dream:hover .dream__actions,
+.dream:focus-within .dream__actions {
+  opacity: 1;
+}
+
+/* Touch screens have no hover, so keep actions visible. */
+@media (hover: none) {
+  .dream__actions {
+    opacity: 1;
+  }
+}
+
+/* ---------- Loading / empty / error ---------- */
+
+.dream--skeleton {
+  animation: none;
+}
+
+.skeleton {
+  display: block;
+  background: linear-gradient(90deg, var(--accent-soft), var(--surface-hover), var(--accent-soft));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.skeleton--circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.skeleton--line {
+  height: 14px;
+  border-radius: 7px;
+}
+
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.state__icon {
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.state h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.state p {
+  max-width: 34ch;
+  color: var(--text-muted);
+}
+
+.state .button {
+  margin-top: 8px;
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Toasts ---------- */
+
+.toasts {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: min(420px, calc(100% - 32px));
+}
+
+.toast {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 10px 10px 16px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #1d1a28;
+  color: #f3f0fa;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.4);
+  animation: rise 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toast--error {
+  background: var(--danger);
+  color: #fff;
+}
+
+.toast--error .icon-button {
+  color: inherit;
+}
+
+.toast--error .icon-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: inherit;
+}
+
+.toast__action {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: #e8b85a;
+  font-weight: 600;
+}
+
+.toast__action:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.toast__timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--gold);
+  transform-origin: left;
+  animation: drain linear forwards;
+}
+
+@keyframes drain {
+  to { transform: scaleX(0); }
+}

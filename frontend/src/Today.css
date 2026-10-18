@@ -1,0 +1,446 @@
+/* ---------- Views ---------- */
+
+.shell--wide {
+  width: min(1040px, 100%);
+}
+
+.view-tabs {
+  display: flex;
+  gap: 4px;
+  align-self: flex-start;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+}
+
+.view-tabs button {
+  height: 38px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.view-tabs button:hover {
+  color: var(--text);
+}
+
+.view-tabs button.is-active {
+  color: var(--accent-contrast);
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 55%, var(--gold)));
+  box-shadow: 0 6px 16px -8px var(--accent);
+}
+
+.today {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .today {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel__sub {
+  margin-top: 2px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Calendar ---------- */
+
+.panel--calendar {
+  padding: 16px;
+}
+
+@media (min-width: 861px) {
+  .panel--calendar {
+    position: sticky;
+    top: calc(16px + env(safe-area-inset-top, 0px));
+  }
+}
+
+.calendar__head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.calendar__head h3 {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.calendar__head .icon-button {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.calendar__today {
+  height: 30px;
+  padding: 0 10px;
+  margin-left: 4px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.calendar__today:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.calendar__today:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.calendar__weekdays,
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar__weekdays {
+  margin-bottom: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  max-height: 48px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 48px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+  transition: background 0.15s, color 0.15s;
+}
+
+.day span {
+  position: relative;
+  z-index: 1;
+}
+
+.day:hover {
+  background: var(--surface-hover);
+}
+
+.day.is-outside {
+  color: color-mix(in srgb, var(--text-muted) 55%, transparent);
+}
+
+.day.is-today {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.day.is-selected {
+  background: var(--accent-soft);
+  font-weight: 700;
+}
+
+/* Progress ring drawn with a conic gradient, masked down to a thin band. */
+.day.has-ring::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) calc(var(--progress) * 360deg), var(--accent-soft) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+}
+
+.day.is-complete::before {
+  background: var(--gold);
+}
+
+.day.is-complete {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.day.is-complete.is-selected {
+  background: var(--gold-soft);
+}
+
+.day.has-plan::after {
+  content: "";
+  position: absolute;
+  bottom: 12%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.calendar__legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.calendar__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend--ring {
+  border: 2px solid var(--gold);
+  border-right-color: var(--accent-soft);
+  border-bottom-color: var(--accent-soft);
+}
+
+.legend--done {
+  background: var(--gold);
+}
+
+.legend--plan {
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+}
+
+/* ---------- Day panel ---------- */
+
+.day-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.day-progress__bar {
+  width: 96px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent-soft);
+  overflow: hidden;
+}
+
+.day-progress__bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.task-form__row {
+  display: flex;
+  gap: 8px;
+}
+
+.task-form__input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  background: var(--surface-solid);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.task-form__input:focus {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.task-form__input::placeholder {
+  color: var(--text-muted);
+}
+
+.task-form__options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.segmented {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+}
+
+.segmented button {
+  height: 30px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.segmented button.is-active {
+  background: var(--surface-solid);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.task-form__dream {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.task-form__dream select {
+  max-width: 220px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-solid);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.dream__check:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dream__check:disabled:hover {
+  border-color: color-mix(in srgb, var(--text-muted) 55%, transparent);
+  color: transparent;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.chips:empty {
+  display: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip--habit {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.chip--streak {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.chip--dream {
+  max-width: 240px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.chip--dream svg {
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
+.confirm-delete {
+  height: 34px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: rise 0.2s ease-out;
+}
+
+.day-task:has(.confirm-delete) .dream__actions {
+  opacity: 1;
+}
+
+.all-done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 12px 0;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.9rem;
+  animation: rise 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
